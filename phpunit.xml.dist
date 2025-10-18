@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         convertDeprecationsToExceptions="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="Flaphl ErrorHandler Test Suite">
+            <directory>Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">.</directory>
+        </include>
+        <exclude>
+            <directory>vendor</directory>
+            <directory>Tests</directory>
+        </exclude>
+    </coverage>
+</phpunit>
