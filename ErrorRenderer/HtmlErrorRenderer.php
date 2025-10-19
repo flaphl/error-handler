@@ -58,7 +58,9 @@ class HtmlErrorRenderer implements ErrorRendererInterface
 <body>
     <div class="container">
         <h1>Server Error</h1>
-        <div class="error-code">Error {$exception->getStatusCode()}</div>
+        <div class="error-code">Error {
+            $exception->getStatusCode()
+        }</div>
         <p>We're sorry, but something went wrong on our end. Please try again later.</p>
     </div>
 </body>
@@ -71,14 +73,18 @@ HTML;
         $trace = $this->renderTrace($exception);
         $context = $this->renderContext($exception);
         $memory = Debug::getMemoryInfo();
-        
+
+        // Escape class and message for HTML title and header to avoid reflected XSS in debug output.
+        $title = $this->escape($exception->getClass() . ': ' . $exception->getMessage());
+        $escapedClass = $this->escape($exception->getClass());
+
         return <<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{$exception->getClass()}: {$exception->getMessage()}</title>
+    <title>{$title}</title>
     <style>
         body { font-family: Monaco, Consolas, monospace; margin: 0; padding: 20px; background: #1e1e1e; color: #d4d4d4; font-size: 13px; line-height: 1.4; }
         .container { max-width: 1200px; margin: 0 auto; }
@@ -103,7 +109,7 @@ HTML;
 <body>
     <div class="container">
         <div class="header">
-            <div class="exception-class">{$exception->getClass()}</div>
+            <div class="exception-class">{$escapedClass}</div>
             <div class="exception-message">{$this->escape($exception->getMessage())}</div>
             <div class="exception-location">
                 in {$this->escape($exception->getFile())} line {$exception->getLine()}
@@ -162,7 +168,7 @@ HTML;
             $class = $isCurrent ? 'context-line context-line-current' : 'context-line';
             
             $html .= sprintf(
-                '<div class="%s"><span class="context-line-number">%d</span><span class="context-code">%s</span></div>',
+                '<div class="%s"><span class="context-line-number">%%d</span><span class="context-code">%%s</span></div>',
                 $class,
                 $lineNum,
                 $this->escape($line)
