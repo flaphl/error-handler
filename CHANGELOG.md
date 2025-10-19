@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-10-19
+
+### Security
+- **Fixed XSS vulnerability in HtmlErrorRenderer**: Exception class names are now properly escaped in HTML title and debug header
+- **Fixed format string vulnerability**: Corrected sprintf format specifiers in context rendering to prevent format string attacks
+
+### Added
+- Test coverage for XSS prevention in HtmlErrorRenderer with reflected content validation
+
+### Fixed
+- Exception class name now properly escaped to prevent reflected XSS in debug output
+- sprintf format string now uses `%%d` and `%%s` to avoid format string vulnerabilities
+
 ## [1.0.0] - 2025-10-18
 
 ### Added
